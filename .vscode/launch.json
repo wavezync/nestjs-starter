@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "name": "Node Remote Debug",
+      "type": "node",
+      "port": 9229,
+      "restart": true,
+      "request": "attach",
+      "protocol": "inspector",
+      "sourceMaps": true,
+      "skipFiles": [
+        "<node_internals>/**",
+        "node_modules/**"
+      ],
+      "sourceMapPathOverrides": {
+        "/usr/src/app/*": "${workspaceRoot}/*"
+      },
+      "localRoot": "${workspaceFolder}/src",
+      "remoteRoot": "/usr/src/app"
+    }
+  ]
+}

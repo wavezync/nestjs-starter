@@ -1,7 +1,7 @@
 {
-  "name": "winme-core",
+  "name": "winme-core-api",
   "version": "0.0.1",
-  "description": "",
+  "description": "WinMe Life API",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
@@ -22,8 +22,12 @@
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^1.0.1",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "nestjs-pino": "^2.2.0",
+    "pino-http": "^5.7.0",
+    "pino-pretty": "^6.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"

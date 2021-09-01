@@ -1,0 +1,34 @@
+version: '3'
+services:
+  api:
+    build: .
+    environment:
+      - DATABASE_URL=postgres://admin:admin@db/winmelife
+      - PORT=3000
+    ports:
+      - 3000:3000
+      - 9229:9229
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
+      - dist:/usr/src/app/dist
+    depends_on:
+      - db
+    command: npm run start:dev
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=winmelife
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  node_modules:
+  postgres-data:
+  dist:

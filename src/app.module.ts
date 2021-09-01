@@ -1,10 +1,44 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import configuration, {
+  LoggerConfig,
+  LoggerFormat,
+} from './config/configuration';
+import { AppConfig } from './config/configuration';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
+    LoggerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<AppConfig>) => {
+        const loggerConfig = config.get<LoggerConfig>('logger');
+
+        return {
+          pinoHttp: [
+            {
+              level: loggerConfig.level,
+              // install 'pino-pretty' package in order to use the following option
+              prettyPrint: loggerConfig.format === LoggerFormat.Pretty,
+              formatters: {
+                level: (label: string) => {
+                  return { level: label };
+                },
+              },
+              // and all the others...
+            },
+          ],
+        };
+      },
+    }),
+  ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, Logger],
 })
 export class AppModule {}
