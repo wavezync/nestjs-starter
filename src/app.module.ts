@@ -1,7 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
-import { AppService } from './app.service';
 import configuration, {
   LoggerConfig,
   LoggerFormat,
@@ -38,6 +37,6 @@ import { AppConfig } from './config/configuration';
     }),
   ],
   controllers: [],
-  providers: [AppService, Logger],
+  providers: [Logger],
 })
 export class AppModule {}
