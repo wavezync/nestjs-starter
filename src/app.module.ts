@@ -11,6 +11,7 @@ import { AppConfig } from './config/configuration';
   imports: [
     ConfigModule.forRoot({
       load: [configuration],
+      isGlobal: true,
     }),
     LoggerModule.forRootAsync({
       imports: [ConfigModule],
