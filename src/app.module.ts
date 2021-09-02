@@ -22,7 +22,6 @@ import { AppConfig } from './config/configuration';
           pinoHttp: [
             {
               level: loggerConfig.level,
-              // install 'pino-pretty' package in order to use the following option
               prettyPrint: loggerConfig.format === LoggerFormat.Pretty,
               formatters: {
                 level: (label: string) => {
