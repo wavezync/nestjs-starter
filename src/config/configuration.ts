@@ -1,5 +1,11 @@
+// Define the app config here
+
+import { cleanEnv, num, str } from 'envalid';
+
+// You can inject it to anywhere via ConfigService
 export interface AppConfig {
   port: number;
+  secret: string;
   database: DatabaseConfig;
   logger: LoggerConfig;
   isDevEnv: boolean;
@@ -21,17 +27,31 @@ export interface LoggerConfig {
 }
 
 export default (): AppConfig => {
+  // validate env vars
+  const env = cleanEnv(process.env, {
+    SECRET: str(),
+    PORT: num({ default: 3000 }),
+    DATABASE_URL: str(),
+    POOL_SIZE: num({ default: 15 }),
+    LOGGER_LEVEL: str({
+      choices: ['info', 'debug', 'error', 'warn'],
+      default: 'info',
+    }),
+    LOGGER_FORMAT: str({ choices: ['json', 'pretty'], default: 'json' }),
+  });
+
   const config: AppConfig = {
-    port: parseInt(process.env.PORT, 10) || 3000,
+    port: env.PORT,
+    secret: env.SECRET,
     database: {
-      url: process.env.DATABASE_URL,
-      poolSize: parseInt(process.env.POOL_SIZE, 10) || 15,
+      url: env.DATABASE_URL,
+      poolSize: env.POOL_SIZE || 15,
     },
     logger: {
-      level: process.env.LOGGER_LEVEL || 'info',
-      format: (process.env.LOGGER_FORMAT as LoggerFormat) || LoggerFormat.Json,
+      level: env.LOGGER_LEVEL || 'info',
+      format: (env.LOGGER_FORMAT as LoggerFormat) || LoggerFormat.Json,
     },
-    isDevEnv: process.env.NODE_ENV === 'development',
+    isDevEnv: env.isDev,
   };
 
   return config;

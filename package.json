@@ -36,6 +36,7 @@
     "@nestjs/swagger": "^5.0.9",
     "@nestjs/terminus": "^8.0.0",
     "bcrypt": "^5.0.1",
+    "envalid": "^7.2.1",
     "helmet": "^4.6.0",
     "knex": "^0.95.10",
     "nestjs-pino": "^2.2.0",
