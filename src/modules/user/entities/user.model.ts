@@ -17,7 +17,7 @@ export class UserModel extends Model {
   createdAt!: Date | string;
   updatedAt!: Date | string;
 
-  // create uuid and createdAt timestamp
+  // on create uuid and createdAt timestamp
   $beforeInsert() {
     this.id = uuid();
     this.createdAt = new Date();
