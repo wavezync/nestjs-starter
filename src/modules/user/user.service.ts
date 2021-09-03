@@ -19,6 +19,11 @@ export class UserService {
    */
   async register(createUser: CreateUserDto) {
     const { email, password } = createUser;
+
+    // we are using Knex + Objection to query
+    // it is closer to SQL
+    // Objection https://vincit.github.io/objection.js/guide/query-examples.html#basic-queries
+    // Knex https://knexjs.org/#Builder
     const prevUser = await UserModel.query()
       .where('email', email)
       .select('id')

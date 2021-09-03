@@ -19,6 +19,8 @@ export const databaseProviders = [
             rejectUnauthorized: false,
           };
 
+      // creates a Knex connection
+      // https://knexjs.org
       const knexConn = knex({
         client: 'pg',
         connection: {
@@ -35,6 +37,8 @@ export const databaseProviders = [
       // we dont need to DI or anything to setup the model with objection
       Model.knex(knexConn);
 
+      // now we can inject this connection to other modules
+      // check database.health.ts
       return knexConn;
     },
   },

@@ -1,6 +1,8 @@
 import { Model } from 'objection';
 import { v4 as uuid } from 'uuid';
 
+// Since we created and imported DatabaseModule now every Model has access to
+// the Knex instance Read more: https://vincit.github.io/objection.js/guide/getting-started.html
 export class UserModel extends Model {
   // define table name
   // check https://vincit.github.io/objection.js/guide/models.html
