@@ -2,7 +2,7 @@ import { KNEX_CONNECTION } from './consts';
 import { ConfigService } from '@nestjs/config';
 import { AppConfig, DatabaseConfig } from 'src/config/configuration';
 import { knex } from 'knex';
-import { Model } from 'objection';
+import { knexSnakeCaseMappers, Model } from 'objection';
 
 export const databaseProviders = [
   {
@@ -27,6 +27,8 @@ export const databaseProviders = [
         },
         pool: { min: 0, max: database.poolSize },
         debug: isDevEnv,
+        // we are using knex case mappers to map from snake_case in postgres to camelCase in JS
+        ...knexSnakeCaseMappers(),
       });
 
       // now every model has this knex instance

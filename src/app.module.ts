@@ -39,9 +39,12 @@ import { AppConfig } from './config/configuration';
       },
     }),
     DatabaseModule,
-    HealthModule,
-    UserModule,
+
+    // Http modules
+    // order of import will determine the order in swagger docs
     AuthModule,
+    UserModule,
+    HealthModule,
   ],
   controllers: [],
   providers: [Logger],
