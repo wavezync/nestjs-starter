@@ -7,6 +7,7 @@ import { Model } from 'objection';
 export const databaseProviders = [
   {
     provide: KNEX_CONNECTION,
+    inject: [ConfigService],
     useFactory: (appConfig: ConfigService<AppConfig>) => {
       const isDevEnv = appConfig.get<boolean>('isDevEnv');
       const database = appConfig.get<DatabaseConfig>('database');
@@ -34,6 +35,5 @@ export const databaseProviders = [
 
       return knexConn;
     },
-    inject: [ConfigService],
   },
 ];

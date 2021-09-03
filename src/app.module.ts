@@ -1,3 +1,4 @@
+import { HealthModule } from './health/health.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { DatabaseModule } from './database/database.module';
@@ -9,6 +10,7 @@ import configuration, {
   LoggerFormat,
 } from './config/configuration';
 import { AppConfig } from './config/configuration';
+import { TerminusModule } from '@nestjs/terminus';
 
 @Module({
   imports: [
@@ -38,6 +40,7 @@ import { AppConfig } from './config/configuration';
       },
     }),
     DatabaseModule,
+    HealthModule,
     UserModule,
     AuthModule,
   ],
