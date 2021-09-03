@@ -19,7 +19,7 @@ export class DatabaseHealthIndicator extends HealthIndicator {
   async isHealthy(): Promise<HealthIndicatorResult> {
     try {
       await this.knex.raw('SELECT 1+1 as result');
-      return this.getStatus(KEY, true, { database: { status: 'up' } });
+      return this.getStatus(KEY, true, { status: 'up' });
     } catch (error) {
       this.logger.error('Database connection failed', error);
       throw new HealthCheckError(

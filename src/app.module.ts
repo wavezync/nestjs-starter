@@ -10,7 +10,6 @@ import configuration, {
   LoggerFormat,
 } from './config/configuration';
 import { AppConfig } from './config/configuration';
-import { TerminusModule } from '@nestjs/terminus';
 
 @Module({
   imports: [
