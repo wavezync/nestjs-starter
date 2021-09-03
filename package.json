@@ -24,7 +24,9 @@
     "knex:migrate:up": "knex migrate:up",
     "knex:migrate:down": "knex migrate:down",
     "knex:migrate:rollback": "knex migrate:rollback",
-    "knex:migrate:rollback:all": "knex migrate:rollback --all"
+    "knex:migrate:rollback:all": "knex migrate:rollback --all",
+    "doc:generate": "npx compodoc -p tsconfig.json -n \"Documentation\"",
+    "doc:serve": "npx compodoc -p tsconfig.json -n \"Documentation\" -s"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -48,6 +50,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@compodoc/compodoc": "^1.1.14",
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
