@@ -18,6 +18,7 @@ export class UserModel extends Model {
   passwordHash: string;
   createdAt!: Date | string;
   updatedAt!: Date | string;
+  verified!: boolean;
 
   // on create uuid and createdAt timestamp
   $beforeInsert() {

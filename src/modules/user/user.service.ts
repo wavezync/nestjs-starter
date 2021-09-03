@@ -38,6 +38,7 @@ export class UserService {
     await UserModel.query().insert({
       email,
       passwordHash,
+      verified: true, // for now no emails
     });
   }
 }
