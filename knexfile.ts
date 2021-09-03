@@ -5,8 +5,8 @@ module.exports = {
   client: 'pg',
   connection: process.env.DATABASE_URL,
   migrations: {
-    directory: './src/db/migrations',
+    directory: './src/database/migrations',
     extension: 'ts',
-    stub: './src/db/stubs/migration.stub',
+    stub: './src/database/stubs/migration.stub',
   },
 };
