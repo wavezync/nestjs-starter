@@ -1,6 +1,6 @@
 // Define the app config here
 
-import { cleanEnv, num, str } from 'envalid';
+import { cleanEnv, num, port, str, url } from 'envalid';
 
 // You can inject it to anywhere via ConfigService
 export interface AppConfig {
@@ -30,8 +30,8 @@ export default (): AppConfig => {
   // validate env vars
   const env = cleanEnv(process.env, {
     SECRET: str(),
-    PORT: num({ default: 3000 }),
-    DATABASE_URL: str(),
+    PORT: port({ default: 3000 }),
+    DATABASE_URL: url(),
     POOL_SIZE: num({ default: 15 }),
     LOGGER_LEVEL: str({
       choices: ['info', 'debug', 'error', 'warn'],
