@@ -1,3 +1,5 @@
+import { UserController } from './modules/user/user.controller';
+import { DatabaseModule } from './db/database.module';
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
@@ -9,6 +11,7 @@ import { AppConfig } from './config/configuration';
 
 @Module({
   imports: [
+    DatabaseModule,
     ConfigModule.forRoot({
       load: [configuration],
     }),
@@ -35,7 +38,7 @@ import { AppConfig } from './config/configuration';
       },
     }),
   ],
-  controllers: [],
+  controllers: [UserController],
   providers: [Logger],
 })
 export class AppModule {}

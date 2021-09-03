@@ -2,6 +2,7 @@ export interface AppConfig {
   port: number;
   database: DatabaseConfig;
   logger: LoggerConfig;
+  isDevEnv: boolean;
 }
 
 export interface DatabaseConfig {
@@ -30,6 +31,7 @@ export default (): AppConfig => {
       level: process.env.LOGGER_LEVEL || 'info',
       format: (process.env.LOGGER_FORMAT as LoggerFormat) || LoggerFormat.Json,
     },
+    isDevEnv: process.env.NODE_ENV === 'development',
   };
 
   return config;
