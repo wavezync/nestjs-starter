@@ -28,7 +28,7 @@ async function bootstrap() {
     .setTitle('Syeta Labs NestJS Starter')
     .setDescription('Syeta Labs NestJS Starter')
     .setVersion('1.0')
-    .addServer(`http://localhost:3000`, 'Local')
+    .addServer(`http://localhost:${port}`, 'Local')
     .build();
 
   const document = SwaggerModule.createDocument(app, openApiConfig);
