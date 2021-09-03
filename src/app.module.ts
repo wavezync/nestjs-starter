@@ -1,4 +1,5 @@
-import { UserController } from './modules/user/user.controller';
+import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
 import { DatabaseModule } from './db/database.module';
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -11,7 +12,6 @@ import { AppConfig } from './config/configuration';
 
 @Module({
   imports: [
-    DatabaseModule,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
@@ -32,14 +32,16 @@ import { AppConfig } from './config/configuration';
                   return { level: label };
                 },
               },
-              // and all the others...
             },
           ],
         };
       },
     }),
+    DatabaseModule,
+    UserModule,
+    AuthModule,
   ],
-  controllers: [UserController],
+  controllers: [],
   providers: [Logger],
 })
 export class AppModule {}

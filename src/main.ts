@@ -22,12 +22,14 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
+  app.setGlobalPrefix('api');
+
   const openApiConfig = new DocumentBuilder()
     .setTitle('WinMe Life API')
     .setDescription('WinMe Life API')
     .setVersion('1.0')
-    .addServer(`http://localhost:3000/api`, 'Local')
-    .addServer('https://winmelife-api.herokuapp.com/api', 'Heroku')
+    .addServer(`http://localhost:3000`, 'Local')
+    .addServer('https://winmelife-api.herokuapp.com', 'Heroku')
     .build();
 
   const document = SwaggerModule.createDocument(app, openApiConfig);
