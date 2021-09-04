@@ -1,38 +1,22 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Syeta Labs NestJS Starter
 
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+In this starter you may find a working application pre configured with the PostgreSQL and JWT Auth.
+
+Please go through [Nest Docs](https://docs.nestjs.com/) before playing with the code.
+
 ## Installation
+
+To run the application you need to have **PostgreSQL** installed.
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+### Running the app
 
 ```bash
 # development
@@ -41,33 +25,78 @@ $ npm run start
 # watch mode
 $ npm run start:dev
 
+# debug mode
+$ npm run start:debug
+
 # production mode
 $ npm run start:prod
 ```
 
-## Test
+### Running the app with docker :whale:
+
+With Docker you can run it easily. Now port `3000` will be open and `9229` can be connected to debugger as well.
+
+**PostgreSQL** is exposed via `5432` port.
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ docker-compose up
 ```
 
-## Support
+## Project Setup
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+The project setup follows standard NestJS conventions. Checkout NestJS docs for more.
 
-## Stay in touch
+### Directory structure
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Directory structure follows module based on features.
 
-## License
+```bash
+src
+├── @types # type defs
+├── common # any common module
+├── config # config related stuffs
+├── database # database module
+│   ├── migrations # database migrations
+│   └── stubs # stubs for creating seeds or migrations
+├── decorators # custom decorators
+├── domain # domain related stuffs, this is where your code goes feature wise
+│   ├── auth # auth module
+│   └── user # user module
+├── exceptions # app exceptions
+├── filters # filters for exceptions
+├── guards # guards goes here
+└── health # health check module
+```
 
-Nest is [MIT licensed](LICENSE).
+### Database and ORM
+
+For database we have used PostgreSQL. And for ORM we have used [Knex.js](https://knexjs.org) with [ObjectionJS](https://vincit.github.io/objection.js).
+
+Knex is an awesome query builder which is closer to SQL. Objection also a thin wrapper around Knex.
+
+For all database migrations please use `snake_case` conversion when creating tables or columns.
+In PostgreSQL it is natural to work with `snake_case` when writing queries.
+
+Knex will automatically map your `snake_case` names into `camelCase` on application side. Dont use `snake_case` in JS side. Instead always use `camelCase`. Read [more](https://vincit.github.io/objection.js/recipes/snake-case-to-camel-case-conversion.html)
+
+> Please change the database name in docker-compose file and .env
+
+### Api Docs
+
+Api docs can be geneated thanks to `@nestjs/swagger` package. Since we are using `cli` plugin you can comment your `Dto`s with JSDocs and the documentation will be done automatically. Please follow conventions mentioned [here](https://docs.nestjs.com/openapi/cli-plugin)
+
+- Access swagger docs at <http://localhost:3000/api-docs>
+- Access swagger.json at <http://localhost:3000/api-docs-json>
+
+### Environment variables
+
+| Env Variable  | Description                  | example                                         |
+| ------------- | ---------------------------- | ----------------------------------------------- |
+| SECRET        | Secret for JWT               | somesecret                                      |
+| DATABASE_URL  | PostgreSQL connection string | postgres://admin:admin@localhost:5432/syetalabs |
+| LOGGER_LEVEL  | Level of logger              | info                                            |
+| LOGGER_FORMAT | Format for logging           | pretty or json                                  |
+
+### VS Code helpers
+
+You can find helpers by pressing `CTRL + SHIFT + P` in VSCode

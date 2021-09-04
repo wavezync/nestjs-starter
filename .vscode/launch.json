@@ -15,7 +15,7 @@
       "sourceMapPathOverrides": {
         "/usr/src/app/*": "${workspaceRoot}/*"
       },
-      "localRoot": "${workspaceFolder}/src",
+      "localRoot": "${workspaceFolder}",
       "remoteRoot": "/usr/src/app"
     }
   ]
