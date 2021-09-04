@@ -14,7 +14,7 @@ export class CreateUserDto {
    * @type {string}
    * @memberof CreateUserDto
    */
-  @IsEmail()
+  @IsEmail() // this will be applied and enforced by class-validator
   email!: string;
 
   /**
