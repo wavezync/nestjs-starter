@@ -10,7 +10,6 @@ import { Request } from 'express';
 import { IS_PUBLIC_KEY } from 'src/decorators/public.decorator';
 import { Reflector } from '@nestjs/core';
 import { Logger } from '@nestjs/common';
-import { ApiException } from '../exceptions/api.exception';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
