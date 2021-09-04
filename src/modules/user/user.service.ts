@@ -41,4 +41,9 @@ export class UserService {
       verified: true, // for now no emails
     });
   }
+
+  async findUserByEmail(email: string): Promise<UserModel | undefined> {
+    const user = await UserModel.query().where('email', email).first();
+    return user;
+  }
 }

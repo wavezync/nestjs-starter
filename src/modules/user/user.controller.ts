@@ -18,7 +18,6 @@ import {
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Post('/register')
   @ApiConflictResponse({
     description: 'Email already taken',
   })
@@ -30,6 +29,7 @@ export class UserController {
     description: 'Registers a new user account and sends a confirmation',
     summary: 'Register a new user',
   })
+  @Post('/register')
   async register(@Body() createUserDto: CreateUserDto): Promise<MessageDto> {
     await this.userService.register(createUserDto);
 

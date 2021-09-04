@@ -38,9 +38,12 @@ async function bootstrap() {
     .setDescription('Syeta Labs NestJS Starter')
     .setVersion('1.0')
     .addServer(`http://localhost:${port}`, 'Local')
+    .addBearerAuth()
     .build();
 
-  const document = SwaggerModule.createDocument(app, openApiConfig);
+  const document = SwaggerModule.createDocument(app, openApiConfig, {
+    deepScanRoutes: true,
+  });
   SwaggerModule.setup('api-docs', app, document);
 
   await app.listen(port, () => {

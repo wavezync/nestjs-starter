@@ -1,5 +1,6 @@
 import { Model } from 'objection';
 import { v4 as uuid } from 'uuid';
+import { UserDto } from '../dto/user.dto';
 
 // Since we created and imported DatabaseModule now every Model has access to
 // the Knex instance Read more: https://vincit.github.io/objection.js/guide/getting-started.html
@@ -29,5 +30,15 @@ export class UserModel extends Model {
   // on update queries also set the timestamp
   $beforeUpdate() {
     this.updatedAt = new Date();
+  }
+
+  toDto(): UserDto {
+    return {
+      id: this.id,
+      email: this.email,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      verified: this.verified,
+    };
   }
 }
