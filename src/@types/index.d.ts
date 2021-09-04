@@ -1,4 +1,4 @@
-import { UserDto } from '../modules/user/dto/user.dto';
+import { UserDto } from '../domain/user/dto/user.dto';
 
 declare global {
   namespace Express {

@@ -20,7 +20,7 @@ export class CreateUserDto {
   /**
    * Password for user
    *
-   * @example abc123
+   * @example abc@123
    * @type {string}
    * @memberof CreateUserDto
    */

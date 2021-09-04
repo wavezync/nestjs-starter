@@ -5,19 +5,22 @@ https://docs.nestjs.com/controllers#controllers
 import { Body, Controller, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { MessageDto } from '../common/dto/message.dto';
+import { MessageDto } from '../../common/dto/message.dto';
 import {
   ApiConflictResponse,
   ApiCreatedResponse,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+import { Public } from 'src/decorators';
 
 @Controller('users')
 @ApiTags('Users')
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @Post('/register')
+  @Public()
   @ApiConflictResponse({
     description: 'Email already taken',
   })
@@ -29,7 +32,6 @@ export class UserController {
     description: 'Registers a new user account and sends a confirmation',
     summary: 'Register a new user',
   })
-  @Post('/register')
   async register(@Body() createUserDto: CreateUserDto): Promise<MessageDto> {
     await this.userService.register(createUserDto);
 

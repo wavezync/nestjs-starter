@@ -1,6 +1,4 @@
 import { HealthModule } from './health/health.module';
-import { AuthModule } from './modules/auth/auth.module';
-import { UserModule } from './modules/user/user.module';
 import { DatabaseModule } from './database/database.module';
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -10,6 +8,9 @@ import configuration, {
   LoggerFormat,
 } from './config/configuration';
 import { AppConfig } from './config/configuration';
+import { DomainModule } from './domain/domain.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtGuard } from './guards/jwt.guard';
 
 @Module({
   imports: [
@@ -41,12 +42,18 @@ import { AppConfig } from './config/configuration';
     DatabaseModule,
 
     // Http modules
-    // order of import will determine the order in swagger docs
-    AuthModule,
-    UserModule,
+    DomainModule,
     HealthModule,
   ],
-  controllers: [],
-  providers: [Logger],
+  providers: [
+    Logger,
+    // we set all routes to be private by default
+    // use `@Public()` to make them public
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+      inject: [DomainModule],
+    },
+  ],
 })
 export class AppModule {}

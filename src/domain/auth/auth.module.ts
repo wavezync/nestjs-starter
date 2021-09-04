@@ -23,5 +23,6 @@ import { AppConfig } from 'src/config/configuration';
   ], // import user module
   controllers: [AuthController],
   providers: [AuthService],
+  exports: [AuthService],
 })
 export class AuthModule {}
