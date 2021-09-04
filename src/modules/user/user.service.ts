@@ -46,4 +46,9 @@ export class UserService {
     const user = await UserModel.query().where('email', email).first();
     return user;
   }
+
+  async findUserById(id: string): Promise<UserModel | undefined> {
+    const user = await UserModel.query().where('id', id).first();
+    return user;
+  }
 }

@@ -29,10 +29,13 @@ export class AuthService {
       throw new UnauthorizedException('Invalid username or password');
     }
 
-    const accessToken = await this.jwtService.signAsync(
-      { userId: user.id },
-      { issuer: 'api', subject: user.id, expiresIn: '1h' },
-    );
+    const jwtPayload = { id: user.id };
+
+    const accessToken = await this.jwtService.signAsync(jwtPayload, {
+      issuer: 'api',
+      subject: user.id,
+      expiresIn: '1h',
+    });
 
     const response: LoginResponseDto = {
       accessToken,
@@ -43,6 +46,17 @@ export class AuthService {
   }
 
   async authenticateWithJwt(token: string) {
-    return 'ok';
+    const decodedJwt = this.jwtService.decode(token);
+    if (!decodedJwt) {
+      throw new UnauthorizedException();
+    }
+
+    const id: string = decodedJwt['id'];
+    const user = await this.userServie.findUserById(id);
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    return user.toDto();
   }
 }

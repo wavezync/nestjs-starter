@@ -3,7 +3,11 @@ https://docs.nestjs.com/controllers#controllers
 */
 
 import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { LoginDto } from './dto/login.dto';
@@ -19,6 +23,7 @@ export class AuthController {
     description: 'Login the user to the system',
     summary: 'Login to the system',
   })
+  @ApiUnauthorizedResponse({ description: 'Invalid login details' })
   login(@Body() loginDto: LoginDto): Promise<LoginResponseDto | undefined> {
     return this.authService.loginUser(loginDto);
   }
