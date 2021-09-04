@@ -5,6 +5,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
+import { ApiExceptionsFilter } from './filters/api-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -22,6 +23,7 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
+  app.useGlobalFilters(new ApiExceptionsFilter());
   app.setGlobalPrefix('api');
 
   const openApiConfig = new DocumentBuilder()
