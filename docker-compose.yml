@@ -22,7 +22,7 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=winmelife
+      - POSTGRES_DB=syetalabs
     ports:
       - '5432:5432'
     volumes:
