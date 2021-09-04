@@ -1,5 +1,10 @@
 import { HttpException } from '@nestjs/common';
 
+export interface ApiExceptionOptions {
+  errorCode?: number;
+  errors?: any;
+}
+
 /**
  * Api Exception class
  *
@@ -8,17 +13,14 @@ import { HttpException } from '@nestjs/common';
  * @extends {HttpException}
  */
 export class ApiException extends HttpException {
-  errorCode?: number;
-  errors?: any;
+  options: ApiExceptionOptions;
 
   constructor(
     message: string | Record<string, any>,
     status = 500,
-    errorCode?: number,
-    errors?: any,
+    options: ApiExceptionOptions = {},
   ) {
     super(message, status);
-    this.errorCode = errorCode;
-    this.errors = errors;
+    this.options = options;
   }
 }

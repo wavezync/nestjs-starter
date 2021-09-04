@@ -1,4 +1,4 @@
-import { VersioningType } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -6,6 +6,7 @@ import * as helmet from 'helmet';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 import { ApiExceptionsFilter } from './filters/api-exception.filter';
+import { ValidationException } from './exceptions/validation.exception';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -24,6 +25,12 @@ async function bootstrap() {
   });
 
   app.useGlobalFilters(new ApiExceptionsFilter());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors) => new ValidationException(errors),
+    }),
+  );
+
   app.setGlobalPrefix('api');
 
   const openApiConfig = new DocumentBuilder()

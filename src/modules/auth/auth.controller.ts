@@ -13,6 +13,6 @@ export class AuthController {
   constructor(private authService: AuthService) {}
   @Get()
   getAll() {
-    throw new ApiException('sdfsdf', 400, 10);
+    throw new ApiException('sdfsdf', 400, { errorCode: 10 });
   }
 }

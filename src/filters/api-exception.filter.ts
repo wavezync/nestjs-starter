@@ -13,16 +13,15 @@ export class ApiExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
     const message = exception.message;
-    const errorCode = exception.errorCode;
-    const errors = exception.errors;
+    const options = exception.options;
     const error = exception.name;
 
     response.status(status).json({
       statusCode: status,
       message,
       error,
-      errorCode,
-      errors,
+      errorCode: options.errorCode,
+      errors: options.errors,
     });
   }
 }
