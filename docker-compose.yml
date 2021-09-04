@@ -3,7 +3,7 @@ services:
   api:
     build: .
     environment:
-      - DATABASE_URL=postgres://admin:admin@db/winmelife
+      - DATABASE_URL=postgres://admin:admin@db/syetalabs
       - PORT=3000
     ports:
       - 3000:3000
@@ -15,7 +15,7 @@ services:
       - dist:/usr/src/app/dist
     depends_on:
       - db
-    command: npm run start:dev
+    command: npm run start:debug
 
   db:
     image: postgres:13
