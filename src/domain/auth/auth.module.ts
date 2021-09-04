@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 import { UserModule } from '../user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppConfig } from 'src/config/configuration';
+import { AppConfig } from '../../config/configuration';
 
 @Module({
   imports: [

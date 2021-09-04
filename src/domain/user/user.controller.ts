@@ -12,7 +12,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { Public } from 'src/decorators';
+import { Public } from '../../decorators';
 
 @Controller('users')
 @ApiTags('Users')

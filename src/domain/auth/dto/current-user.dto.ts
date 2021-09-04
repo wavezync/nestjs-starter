@@ -1,4 +1,4 @@
-import { UserDto } from 'src/domain/user/dto/user.dto';
+import { UserDto } from '../../../domain/user/dto/user.dto';
 
 export class CurrentUser {
   /**

@@ -1,6 +1,6 @@
 import { KNEX_CONNECTION } from './consts';
 import { ConfigService } from '@nestjs/config';
-import { AppConfig, DatabaseConfig } from 'src/config/configuration';
+import { AppConfig, DatabaseConfig } from '../config/configuration';
 import { knex } from 'knex';
 import { knexSnakeCaseMappers, Model } from 'objection';
 

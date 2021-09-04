@@ -2,7 +2,7 @@
   "name": "syetalabs-nest-starter",
   "version": "0.0.1",
   "description": "Syeta Labs Nest Starter",
-  "author": "",
+  "author": "Kasun Vithanage <alankasun@gmail.com> (https://kasvith.me)",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -42,7 +42,6 @@
     "class-validator": "^0.13.1",
     "envalid": "^7.2.1",
     "helmet": "^4.6.0",
-    "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.10",
     "nestjs-pino": "^2.2.0",
     "objection": "^3.0.0-alpha.4",
