@@ -54,7 +54,7 @@ import { UserModule } from 'modules/user/user.module';
     {
       provide: APP_GUARD,
       useClass: JwtGuard,
-      inject: [AuthModule],
+      inject: [AuthModule], // this guards depends on AuthService which is a part of AuthModule
     },
   ],
 })
