@@ -52,20 +52,24 @@ Directory structure follows module based on features.
 
 ```bash
 src
-├── @types # type defs
-├── common # any common module
-├── config # config related stuffs
+├── @types # type defs goes here
+├── common # common stuffs
+│   ├── decorators # custom decorators
+│   ├── dto # common DTOs
+│   ├── exceptions # exceptions
+│   ├── filters # filters for app
+│   └── guards # guards for app
+├── config # app config
 ├── database # database module
-│   ├── migrations # database migrations
-│   └── stubs # stubs for creating seeds or migrations
-├── decorators # custom decorators
-├── domain # domain related stuffs, this is where your code goes feature wise
-│   ├── auth # auth module
-│   └── user # user module
-├── exceptions # app exceptions
-├── filters # filters for exceptions
-├── guards # guards goes here
-└── health # health check module
+│   ├── migrations # db migrations
+│   └── stubs # migration/seed stubs
+└── modules # modules of app
+    ├── auth # auth module
+    │   └── dto
+    ├── health # health module
+    └── user # user module
+        ├── dto
+        └── entities
 ```
 
 ### Database and ORM
