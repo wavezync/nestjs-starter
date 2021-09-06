@@ -16,7 +16,7 @@ import {
   ApiUnauthorizedResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { Public, User } from '../../decorators';
+import { Public, User } from '../../common/decorators';
 import { UserDto } from '../user/dto/user.dto';
 import { AuthService } from './auth.service';
 import { LoginResponseDto } from './dto/login-response.dto';

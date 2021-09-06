@@ -1,4 +1,4 @@
-import { HealthModule } from './health/health.module';
+import { HealthModule } from './modules/health/health.module';
 import { DatabaseModule } from './database/database.module';
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -8,9 +8,10 @@ import configuration, {
   LoggerFormat,
 } from './config/configuration';
 import { AppConfig } from './config/configuration';
-import { DomainModule } from './domain/domain.module';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtGuard } from './guards/jwt.guard';
+import { JwtGuard } from './common/guards/jwt.guard';
+import { AuthModule } from 'modules/auth/auth.module';
+import { UserModule } from 'modules/user/user.module';
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import { JwtGuard } from './guards/jwt.guard';
     DatabaseModule,
 
     // Http modules
-    DomainModule,
+    AuthModule,
+    UserModule,
     HealthModule,
   ],
   providers: [
@@ -52,7 +54,7 @@ import { JwtGuard } from './guards/jwt.guard';
     {
       provide: APP_GUARD,
       useClass: JwtGuard,
-      inject: [DomainModule],
+      inject: [AuthModule],
     },
   ],
 })

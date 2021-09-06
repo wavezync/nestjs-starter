@@ -5,7 +5,7 @@ https://docs.nestjs.com/providers#services
 import { ConflictException, Injectable } from '@nestjs/common';
 import { UserModel } from './entities/user.model';
 import { CreateUserDto } from './dto/create-user.dto';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 
 const BCRYPT_HASH_ROUNDS = 10;
 
