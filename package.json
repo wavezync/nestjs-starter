@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "Syeta Labs Nest Starter",
   "author": "Kasun Vithanage <alankasun@gmail.com> (https://kasvith.me)",
-  "private": true,
-  "license": "UNLICENSED",
+  "private": false,
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
