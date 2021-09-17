@@ -21,6 +21,7 @@
     "types": [
       "@types/node",
       "./src/@types"
-    ]
+    ],
+    "strict": true
   }
 }
