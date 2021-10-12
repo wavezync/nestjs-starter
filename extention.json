@@ -1,0 +1,17 @@
+{
+    "recommendations": [
+      "aaron-bond.better-comments",
+      "coenraads.bracket-pair-colorizer-2",
+      "wmaurer.change-case",
+      "oouo-diogo-perdigao.docthis",
+      "dbaeumer.vscode-eslint",
+      "abhijoybasak.nestjs-files",
+      "eg2.vscode-npm-script",
+      "christian-kohler.path-intellisense",
+      "42crunch.vscode-openapi",
+      "esbenp.prettier-vscode",
+      "wayou.vscode-todo-highlight",
+      "ashinzekene.nestjs",
+      "deerawan.vscode-faker"
+    ]
+  }
