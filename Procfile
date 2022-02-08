@@ -1,2 +1,2 @@
-release: PGSSLMODE=no-verify npm run knex:migrate:latest
+release: PGSSLMODE=no-verify npm run knex:prod:migrate:latest
 web: npm run start:prod
