@@ -1,4 +1,4 @@
-import { UserDto } from '../../user/dto/user.dto';
+import { UserDto } from 'modules/user/dtos/user.dto';
 
 export class LoginResponseDto {
   /**

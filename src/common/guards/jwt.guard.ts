@@ -10,6 +10,7 @@ import { Request } from 'express';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 import { Reflector } from '@nestjs/core';
 import { Logger } from '@nestjs/common';
+import { getRequest } from 'common/graphql/context';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
@@ -32,7 +33,7 @@ export class JwtGuard implements CanActivate {
         return true;
       }
 
-      const req = context.switchToHttp().getRequest<Request>();
+      const req = getRequest(context);
       return this.validateRequest(req);
     } catch (error) {
       this.logger.error('Error in JWTGuard', error);

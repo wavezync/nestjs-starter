@@ -38,4 +38,4 @@ lerna-debug.log*
 # App
 .env
 documentation
-src/*.graphql
+src/*.gql

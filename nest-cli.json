@@ -9,6 +9,17 @@
           "classValidatorShim": true,
           "introspectComments": true
         }
+      },
+      {
+        "name": "@nestjs/graphql",
+        "options": {
+          "typeFileNameSuffix": [
+            ".input.ts",
+            ".args.ts",
+            ".object.ts"
+          ],
+          "introspectComments": true
+        }
       }
     ]
   }

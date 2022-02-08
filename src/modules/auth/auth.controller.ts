@@ -1,7 +1,3 @@
-/*
-https://docs.nestjs.com/controllers#controllers
-*/
-
 import {
   Controller,
   Post,
@@ -16,12 +12,12 @@ import {
   ApiUnauthorizedResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { Public, User } from '../../common/decorators';
-import { UserDto } from '../user/dto/user.dto';
+import { Public, CurrentUser } from 'common/decorators';
+import { UserDto } from '../user/dtos/user.dto';
 import { AuthService } from './auth.service';
-import { LoginResponseDto } from './dto/login-response.dto';
-import { LoginDto } from './dto/login.dto';
-import { CurrentUser } from './dto/current-user.dto';
+import { LoginResponseDto } from './dtos/login-response.dto';
+import { LoginDto } from './dtos/login.dto';
+import { CurrentUserDto } from './dtos/current-user.dto';
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -42,7 +38,7 @@ export class AuthController {
 
   @Get('/me')
   @ApiBearerAuth()
-  async me(@User() user: UserDto): Promise<CurrentUser> {
+  async me(@CurrentUser() user: UserDto): Promise<CurrentUserDto> {
     return { user };
   }
 }

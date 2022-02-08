@@ -1,14 +1,10 @@
-/*
-https://docs.nestjs.com/providers#services
-*/
-
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
-import { LoginDto } from './dto/login.dto';
-import { UserNotFoundException } from '../../common/exceptions/user-not-found.exception';
+import { LoginDto } from './dtos/login.dto';
+import { UserNotFoundException } from 'modules/user/exceptions/user-not-found.exception';
 import bcrypt from 'bcrypt';
-import { LoginResponseDto } from './dto/login-response.dto';
+import { LoginResponseDto } from './dtos/login-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -46,7 +42,7 @@ export class AuthService {
   }
 
   async authenticateWithJwt(token: string) {
-    const decodedJwt = this.jwtService.decode(token);
+    const decodedJwt = await this.jwtService.verifyAsync(token);
     if (!decodedJwt) {
       throw new UnauthorizedException();
     }

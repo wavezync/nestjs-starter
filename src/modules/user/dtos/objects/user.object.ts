@@ -1,11 +1,8 @@
-export class UserDto {
-  /**
-   * User Id
-   *
-   * @example ffbcd8d4-7ce1-45a3-9f20-c3a63c60491e
-   * @type {string}
-   * @memberof UserDto
-   */
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+
+@ObjectType('User')
+export class UserObject {
+  @Field(() => ID, { description: 'ID of the user' })
   id!: string;
 
   /**
@@ -30,17 +27,17 @@ export class UserDto {
    * User join date
    *
    * @example 2021-09-04
-   * @type {(Date | string)}
+   * @type {Date}
    * @memberof UserDto
    */
-  createdAt!: Date | string;
+  createdAt!: Date;
 
   /**
    * User last updated
    *
    * @example 2021-09-04
-   * @type {(Date | string)}
+   * @type {Date}
    * @memberof UserDto
    */
-  updatedAt!: Date | string;
+  updatedAt!: Date;
 }

@@ -4,8 +4,8 @@ https://docs.nestjs.com/controllers#controllers
 
 import { Body, Controller, Post } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { MessageDto } from '../../common/dto/message.dto';
+import { RegisterUserDto as RegisterUserDto } from './dtos/register-user.dto';
+import { MessageDto } from '../../common/dtos/message.dto';
 import {
   ApiConflictResponse,
   ApiCreatedResponse,
@@ -32,8 +32,10 @@ export class UserController {
     description: 'Registers a new user account and sends a confirmation',
     summary: 'Register a new user',
   })
-  async register(@Body() createUserDto: CreateUserDto): Promise<MessageDto> {
-    await this.userService.register(createUserDto);
+  async register(
+    @Body() registerUserDto: RegisterUserDto,
+  ): Promise<MessageDto> {
+    await this.userService.registerUser(registerUserDto);
 
     return { message: 'Account created' };
   }

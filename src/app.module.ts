@@ -12,6 +12,11 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from './common/guards/jwt.guard';
 import { AuthModule } from 'modules/auth/auth.module';
 import { UserModule } from 'modules/user/user.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { DataloaderModule } from 'dataloader/dataloader.module';
+import { DataloaderService } from 'dataloader/dataloader.service';
+import { join } from 'path';
+import { formatGraphQLError } from 'common/graphql/errors';
 
 @Module({
   imports: [
@@ -37,6 +42,22 @@ import { UserModule } from 'modules/user/user.module';
               },
             },
           ],
+        };
+      },
+    }),
+    GraphQLModule.forRootAsync({
+      imports: [DataloaderModule],
+      inject: [DataloaderService],
+      useFactory: (dataloaderService: DataloaderService) => {
+        return {
+          autoSchemaFile: join(process.cwd(), 'src', 'schema.gql'),
+          debug: true,
+          playground: true,
+          introspection: true,
+          formatError: formatGraphQLError,
+          context: () => ({
+            loaders: dataloaderService.createLoaders(),
+          }),
         };
       },
     }),

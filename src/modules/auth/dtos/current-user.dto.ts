@@ -1,6 +1,6 @@
-import { UserDto } from '../../user/dto/user.dto';
+import { UserDto } from 'modules/user/dtos/user.dto';
 
-export class CurrentUser {
+export class CurrentUserDto {
   /**
    * Current user
    *
