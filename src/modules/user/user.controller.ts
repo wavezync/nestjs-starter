@@ -1,7 +1,3 @@
-/*
-https://docs.nestjs.com/controllers#controllers
-*/
-
 import { Body, Controller, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto as RegisterUserDto } from './dtos/register-user.dto';
