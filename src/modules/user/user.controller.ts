@@ -6,13 +6,12 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto as RegisterUserDto } from './dtos/register-user.dto';
 import { MessageDto } from '../../common/dtos/message.dto';
-import {
-  ApiConflictResponse,
-  ApiCreatedResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Public } from '../../common/decorators';
+import { ApiValidationException } from 'common/decorators/api-validation-exception.decorator';
+import { ApiUnknownErrorException } from 'common/decorators/api-unknown-error-exception.decorator';
+import { TemplatedApiException } from '../../common/decorators/templated-api-exception.decorator';
+import { EmailAlreadyTakenException } from './exceptions/email-already-taken.exception';
 
 @Controller('users')
 @ApiTags('Users')
@@ -21,9 +20,11 @@ export class UserController {
 
   @Post('/register')
   @Public()
-  @ApiConflictResponse({
-    description: 'Email already taken',
-  })
+  @ApiValidationException()
+  @TemplatedApiException(
+    () => new EmailAlreadyTakenException('jhonedoes@example.com'),
+  )
+  @ApiUnknownErrorException()
   @ApiCreatedResponse({
     type: MessageDto,
     description: 'User account created',

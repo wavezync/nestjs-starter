@@ -39,6 +39,7 @@
     "doc:serve": "npx compodoc -p tsconfig.json -n \"Documentation\" -s"
   },
   "dependencies": {
+    "@nanogiants/nestjs-swagger-api-exception-decorator": "^1.6.0",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^1.0.1",
     "@nestjs/core": "^8.0.0",

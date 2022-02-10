@@ -5,7 +5,7 @@ import { ErrorCodes } from 'common/errors/error-codes';
 export class EmailAlreadyTakenException extends BaseException {
   constructor(email: string) {
     super(`${email} already in use`, HttpStatus.CONFLICT, {
-      errorCode: ErrorCodes.EmailAlreadyInUse,
+      errorCode: ErrorCodes.EmailAlreadyInUseError,
     });
   }
 }

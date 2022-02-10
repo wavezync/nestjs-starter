@@ -5,9 +5,9 @@ import { AuthService } from '../auth.service';
 import { LoginResult, LoginSuccess } from '../dtos/results/login-result.object';
 import { LoginInput } from '../dtos/inputs/login.input';
 import { TokensObject } from '../dtos/objects/tokens.object';
-import { UserNotFoundException } from '../../user/exceptions/user-not-found.exception';
 import { plainToClass } from 'class-transformer';
-import { UserNotFoundError } from '../../user/dtos/errors/user-not-found-error.object';
+import { InvalidLoginOrPasswordException } from '../exceptions/invalid-login-or-password.exception';
+import { InvalidLoginOrPasswordError } from '../dtos/errors/invalid-login-or-password-error.object';
 
 @Injectable()
 export class AuthResolver {
@@ -30,8 +30,8 @@ export class AuthResolver {
 
       return result;
     } catch (error) {
-      if (error instanceof UserNotFoundException) {
-        return plainToClass(UserNotFoundError, error);
+      if (error instanceof InvalidLoginOrPasswordException) {
+        return plainToClass(InvalidLoginOrPasswordError, error);
       }
 
       throw error;

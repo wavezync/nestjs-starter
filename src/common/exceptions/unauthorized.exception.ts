@@ -5,7 +5,7 @@ import { ErrorCodes } from 'common/errors/error-codes';
 export class UnauthorizedException extends BaseException {
   constructor(message?: string) {
     super(message || 'Unauthorized', HttpStatus.UNAUTHORIZED, {
-      errorCode: ErrorCodes.Unauthorized,
+      errorCode: ErrorCodes.UnauthorizedError,
     });
   }
 }

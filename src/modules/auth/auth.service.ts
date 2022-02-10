@@ -2,9 +2,9 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { LoginDto } from './dtos/login.dto';
-import { UserNotFoundException } from 'modules/user/exceptions/user-not-found.exception';
 import bcrypt from 'bcrypt';
 import { LoginResponseDto } from './dtos/login-response.dto';
+import { InvalidLoginOrPasswordException } from './exceptions/invalid-login-or-password.exception';
 
 @Injectable()
 export class AuthService {
@@ -17,12 +17,12 @@ export class AuthService {
     const { login, password } = loginDto;
     const user = await this.userServie.findUserByEmail(login);
     if (!user) {
-      throw new UserNotFoundException();
+      throw new InvalidLoginOrPasswordException();
     }
 
     const passwordOk = await bcrypt.compare(password, user.passwordHash);
     if (!passwordOk) {
-      throw new UnauthorizedException('Invalid username or password');
+      throw new InvalidLoginOrPasswordException();
     }
 
     const jwtPayload = { id: user.id };

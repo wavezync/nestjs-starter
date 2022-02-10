@@ -64,7 +64,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
       message: 'Unknown error occured',
       error: 'UnknownError',
-      errorCode: ErrorCodes.Unknown,
+      errorCode: ErrorCodes.UnknownError,
     });
   }
 }
