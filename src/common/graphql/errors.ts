@@ -4,9 +4,7 @@ import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import { TokenExpiredError } from 'jsonwebtoken';
 import { UnauthorizedException } from '../exceptions/unauthorized.exception';
 
-export function formatGraphQLError(
-  err: GraphQLError,
-): GraphQLFormattedError<Record<string, any>> {
+export function formatGraphQLError(err: GraphQLError): GraphQLFormattedError {
   if (err.originalError instanceof ValidationException) {
     const extensions = {
       errors: err.originalError.options.errors,

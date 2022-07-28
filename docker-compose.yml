@@ -1,7 +1,9 @@
 version: '3'
 services:
   api:
-    build: .
+    build:
+     context: .
+     target: development
     environment:
       - DATABASE_URL=postgres://admin:admin@db/syetalabs
       - PORT=3000

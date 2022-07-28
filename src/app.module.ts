@@ -1,6 +1,6 @@
 import { HealthModule } from './modules/health/health.module';
 import { DatabaseModule } from './database/database.module';
-import { Logger, Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import configuration, {
@@ -17,6 +17,7 @@ import { DataloaderModule } from 'dataloader/dataloader.module';
 import { DataloaderService } from 'dataloader/dataloader.service';
 import { join } from 'path';
 import { formatGraphQLError } from 'common/graphql/errors';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
@@ -31,23 +32,26 @@ import { formatGraphQLError } from 'common/graphql/errors';
         const loggerConfig = config.get<LoggerConfig>('logger');
 
         return {
-          pinoHttp: [
-            {
-              level: loggerConfig.level,
-              prettyPrint: loggerConfig.format === LoggerFormat.Pretty,
-              formatters: {
-                level: (label: string) => {
-                  return { level: label };
-                },
+          pinoHttp: {
+            level: loggerConfig.level,
+            transport:
+              loggerConfig.format === LoggerFormat.Pretty
+                ? { target: 'pino-pretty' }
+                : undefined,
+            useLevelLabels: true,
+            formatters: {
+              level: (label: string) => {
+                return { level: label };
               },
             },
-          ],
+          },
         };
       },
     }),
-    GraphQLModule.forRootAsync({
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
       imports: [DataloaderModule],
       inject: [DataloaderService],
+      driver: ApolloDriver,
       useFactory: (dataloaderService: DataloaderService) => {
         return {
           autoSchemaFile: join(process.cwd(), 'src', 'schema.gql'),
@@ -75,7 +79,6 @@ import { formatGraphQLError } from 'common/graphql/errors';
     {
       provide: APP_GUARD,
       useClass: JwtGuard,
-      inject: [AuthModule], // this guards depends on AuthService which is a part of AuthModule
     },
   ],
 })
