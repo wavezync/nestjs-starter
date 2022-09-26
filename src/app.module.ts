@@ -44,6 +44,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
                 return { level: label };
               },
             },
+            autoLogging: false,
           },
         };
       },
