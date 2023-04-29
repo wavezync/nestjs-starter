@@ -20,11 +20,11 @@ export const TemplatedApiException = buildTemplatedApiExceptionDecorator(
     placeholders: {
       errors: buildPlaceholder(
         () => BaseException,
-        (exception) => exception.options.errors || {},
+        (exception) => exception.extra.errors || {},
       ),
       errorCode: buildPlaceholder(
         () => BaseException,
-        (exception) => exception.options.errorCode || ErrorCodes.UnknownError,
+        (exception) => exception.extra.errorCode || ErrorCodes.UnknownError,
       ),
       error: buildPlaceholder(
         () => BaseException,

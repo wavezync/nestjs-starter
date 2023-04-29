@@ -13,7 +13,7 @@ export interface BaseExceptionOptions {
  * @extends {HttpException}
  */
 export class BaseException extends HttpException {
-  options: BaseExceptionOptions;
+  extra: BaseExceptionOptions;
 
   constructor(
     message: string | Record<string, any>,
@@ -21,6 +21,6 @@ export class BaseException extends HttpException {
     options: BaseExceptionOptions = {},
   ) {
     super(message, status);
-    this.options = options;
+    this.extra = options;
   }
 }

@@ -13,7 +13,7 @@ import { Response } from 'express';
 import { ErrorCodes } from '../errors/error-codes';
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import { UnauthorizedException } from '../exceptions/unauthorized.exception';
-import { AuthenticationError } from 'apollo-server-errors';
+import { AuthenticationError } from '@nestjs/apollo';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {

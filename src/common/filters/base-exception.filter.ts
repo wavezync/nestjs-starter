@@ -21,7 +21,7 @@ export class BaseExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
     const message = exception.message;
-    const options = exception.options;
+    const options = exception.extra;
     const error = exception.name;
 
     response.status(status).json({
