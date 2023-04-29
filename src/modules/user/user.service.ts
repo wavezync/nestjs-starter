@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './entities/user.model';
+import { User } from './models/user.model';
 import { RegisterUserDto } from './dtos/register-user.dto';
 import bcrypt from 'bcrypt';
 import { UserObject } from './dtos/objects/user.object';

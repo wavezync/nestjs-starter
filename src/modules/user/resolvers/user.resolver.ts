@@ -11,7 +11,7 @@ import { EmailAlreadyTakenException } from '../exceptions/email-already-taken.ex
 import { plainToClass } from 'class-transformer';
 import { EmailAlreadyTakenError } from '../dtos/errors/email-already-taken-error.object';
 import { RegisterUserInput } from '../dtos/inputs/register-user.input';
-import { User } from '../entities/user.model';
+import { User } from '../models/user.model';
 
 @Resolver(() => UserObject)
 export class UserResolver {
