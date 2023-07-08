@@ -1,4 +1,4 @@
-# Syeta Labs NestJS Starter
+# WaveZync NestJS Starter
 
 ## Description
 
