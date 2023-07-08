@@ -4,21 +4,22 @@ import {
   HealthIndicator,
   HealthIndicatorResult,
 } from '@nestjs/terminus';
-import { Knex } from 'knex';
-import { KNEX_CONNECTION } from './consts';
+import { KYSELY_CONNECTION } from './consts';
+import { Kysely, sql } from 'kysely';
+import { DB } from './schema/db';
 
 const KEY = 'database';
 
 @Injectable()
 export class DatabaseHealthIndicator extends HealthIndicator {
   private readonly logger = new Logger(DatabaseHealthIndicator.name);
-  constructor(@Inject(KNEX_CONNECTION) private knex: Knex) {
+  constructor(@Inject(KYSELY_CONNECTION) private db: Kysely<DB>) {
     super();
   }
 
   async isHealthy(): Promise<HealthIndicatorResult> {
     try {
-      await this.knex.raw('SELECT 1+1 as result');
+      await sql`select 1+1 AS result`.execute(this.db);
       return this.getStatus(KEY, true, { status: 'up' });
     } catch (error) {
       this.logger.error('Database connection failed', error);
