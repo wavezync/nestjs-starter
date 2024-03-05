@@ -5,7 +5,7 @@ services:
      context: .
      target: development
     environment:
-      - DATABASE_URL=postgres://admin:admin@db/syetalabs
+      - DATABASE_URL=postgres://admin:admin@db/wavezync
       - PORT=3000
     ports:
       - 3000:3000
@@ -22,9 +22,9 @@ services:
   db:
     image: postgres:latest
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=syetalabs
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=wavezync
     ports:
       - '5432:5432'
     volumes:

@@ -97,7 +97,7 @@ Api docs can be geneated thanks to `@nestjs/swagger` package. Since we are using
 | Env Variable  | Description                  | example                                         |
 | ------------- | ---------------------------- | ----------------------------------------------- |
 | SECRET        | Secret for JWT               | somesecret                                      |
-| DATABASE_URL  | PostgreSQL connection string | postgres://admin:admin@localhost:5432/syetalabs |
+| DATABASE_URL  | PostgreSQL connection string | postgres://admin:admin@localhost:5432/wavezync |
 | LOGGER_LEVEL  | Level of logger              | info                                            |
 | LOGGER_FORMAT | Format for logging           | pretty or json                                  |
 

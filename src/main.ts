@@ -67,8 +67,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const openApiConfig = new DocumentBuilder()
-    .setTitle('SyetaLabs NestJS starter')
-    .setDescription('SyetaLabs NestJS starter')
+    .setTitle('Wavezync NestJS starter')
+    .setDescription('Wavezync NestJS starter')
     .setVersion('1.0')
     .addServer(`http://localhost:${port}`, 'Local')
     .setExternalDoc(
@@ -76,6 +76,12 @@ async function bootstrap() {
       'https://github.com/typestack/class-validator#validation-errors',
     )
     .addBearerAuth()
+    .addGlobalParameters({
+      in: 'path',
+      name: 'X-Api-Version',
+      required: false,
+      description: 'API Version',
+    })
     .build();
 
   const document = SwaggerModule.createDocument(app, openApiConfig, {
