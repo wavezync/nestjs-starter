@@ -1,12 +1,12 @@
 {
-  "name": "syetalabs-nest-starter",
+  "name": "wavezync-nest-starter",
   "version": "0.0.1",
-  "description": "Syeta Labs Nest Starter",
+  "description": "WaveZync Nest Starter",
   "author": "Kasun Vithanage <alankasun@gmail.com> (https://kasvith.me)",
   "private": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/syetalabs/nestjs-starter.git"
+    "url": "https://github.com/wavezync/nestjs-starter"
   },
   "license": "MIT",
   "scripts": {
