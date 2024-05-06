@@ -12,6 +12,7 @@ import { AllExceptionsFilter } from 'common/filters/all-exception.filter';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
+    snapshot: true,
   });
 
   const configService = app.get(ConfigService);
@@ -67,8 +68,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const openApiConfig = new DocumentBuilder()
-    .setTitle('SyetaLabs NestJS starter')
-    .setDescription('SyetaLabs NestJS starter')
+    .setTitle('WaveZync NestJS starter')
+    .setDescription('WaveZync NestJS starter')
     .setVersion('1.0')
     .addServer(`http://localhost:${port}`, 'Local')
     .setExternalDoc(

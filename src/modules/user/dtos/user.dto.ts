@@ -18,6 +18,14 @@ export class UserDto {
   email!: string;
 
   /**
+   * Name of user
+   *
+   * @type {string}
+   * @memberof UserDto
+   */
+  name!: string;
+
+  /**
    * Is user verified
    *
    * @example true

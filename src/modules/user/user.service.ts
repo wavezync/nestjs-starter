@@ -30,12 +30,20 @@ export class UserService {
 
     const passwordHash = await bcrypt.hash(password, BCRYPT_HASH_ROUNDS);
 
-    const user = this.userRepositoy.createUser({
+    const user = await this.userRepositoy.createUser({
       email: email.toLowerCase(),
       passwordHash,
     });
 
-    return user;
+    return user.toDto();
+  }
+
+  async findUserByEmail(email: string) {
+    return this.userRepositoy.getUserByEmail(email);
+  }
+
+  async findUserById(id: string) {
+    return this.userRepositoy.getUserById(id);
   }
 
   async loadUsersByIdBatch(userIds: string[]): Promise<(Error | UserObject)[]> {

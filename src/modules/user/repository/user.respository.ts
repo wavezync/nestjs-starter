@@ -1,22 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'database/database.service';
 import { DB } from 'database/schema/db';
-import { SelectableUser, InsertableUser } from 'database/schema/users';
-import { Kysely, SelectExpression, Selection } from 'kysely';
-import { v4 as uuid } from 'uuid';
-
-type UserWithoutPassword = Omit<SelectableUser, 'passwordHash'>;
-type DefaultUserFields = keyof UserWithoutPassword;
-type UsersSelectionExpression = SelectExpression<DB, 'users'>;
-
-const DEFAULT_USER_SELECT_FIELDS = [
-  'id',
-  'email',
-  'name',
-  'createdAt',
-  'updatedAt',
-  'verified',
-] satisfies DefaultUserFields[];
+import { UserCreate } from 'database/schema/users';
+import { withTimestamps } from 'database/utils/datetime';
+import { Kysely } from 'kysely';
+import { getUUIDV4 } from 'utils/uuid';
+import { UserModel } from '../models/user.model';
 
 @Injectable()
 export class UserRepositoy {
@@ -25,60 +14,62 @@ export class UserRepositoy {
     this.db = this.dbService.getDB();
   }
 
-  async createUser(
-    createUserInput: InsertableUser,
-  ): Promise<UserWithoutPassword> {
-    const id = uuid();
-    const now = new Date();
+  async createUser(createUserInput: UserCreate) {
+    const id = getUUIDV4();
 
-    const insertable: InsertableUser = {
+    const insertable: UserCreate = withTimestamps({
       id,
-      createdAt: now,
-      updatedAt: now,
       ...createUserInput,
-    };
+    });
 
-    const user = await this.db
+    const result = await this.db
       .insertInto('users')
       .values(insertable)
-      .returning(['id', 'name', 'createdAt', 'updatedAt', 'email', 'verified'])
+      .returningAll()
       .executeTakeFirst();
-    return user;
+
+    if (!result) {
+      return null;
+    }
+
+    return new UserModel(result);
   }
 
-  async getUserByEmail<S extends UsersSelectionExpression = DefaultUserFields>(
-    email: string,
-    select: S | S[] = DEFAULT_USER_SELECT_FIELDS as S[],
-  ): Promise<Selection<DB, 'users', S>> {
-    const user = await this.db
+  async getUserByEmail(email: string) {
+    const result = await this.db
       .selectFrom('users')
       .where('email', '=', email.toLowerCase())
-      .select(select)
+      .selectAll()
       .executeTakeFirst();
-    return user;
+
+    if (!result) {
+      return null;
+    }
+
+    return new UserModel(result);
   }
 
-  async getUserById<S extends UsersSelectionExpression = DefaultUserFields>(
-    id: string,
-    select: S | S[] = DEFAULT_USER_SELECT_FIELDS as S[],
-  ): Promise<Selection<DB, 'users', S>> {
-    const user = await this.db
+  async getUserById(id: string) {
+    const result = await this.db
       .selectFrom('users')
       .where('id', '=', id)
-      .select(select)
+      .selectAll()
       .executeTakeFirst();
-    return user;
+
+    if (!result) {
+      return null;
+    }
+
+    return new UserModel(result);
   }
 
-  async getUsersByIds<S extends UsersSelectionExpression = DefaultUserFields>(
-    ids: string[],
-    select: S | S[] = DEFAULT_USER_SELECT_FIELDS as S[],
-  ) {
+  async getUsersByIds(ids: string[]) {
     const users = await this.db
       .selectFrom('users')
       .where('id', 'in', ids)
-      .select(select)
+      .selectAll()
       .execute();
-    return users;
+
+    return users.map((user) => new UserModel(user));
   }
 }

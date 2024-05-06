@@ -15,6 +15,14 @@ export class UserObject {
   email!: string;
 
   /**
+   * Name of user
+   *
+   * @type {string}
+   * @memberof UserObject
+   */
+  name!: string;
+
+  /**
    * Is user verified
    *
    * @example true

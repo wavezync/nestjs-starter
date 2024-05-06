@@ -18,9 +18,13 @@ import { DataloaderService } from 'dataloader/dataloader.service';
 import { join } from 'path';
 import { formatGraphQLError } from 'common/graphql/errors';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { DevtoolsModule } from '@nestjs/devtools-integration';
 
 @Module({
   imports: [
+    DevtoolsModule.register({
+      http: process.env.NODE_ENV !== 'production',
+    }),
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
