@@ -18,8 +18,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  DOKKU_HOST: ssh://dokku@ssh.analystbuilder.com:22
-  DOKKU_APP: staging-ab-api
+  DOKKU_HOST: ssh://dokku@ssh-dev.wavezync.com:22
+  DOKKU_APP: nestjs-starter-api
 
 jobs:
   # Build job
