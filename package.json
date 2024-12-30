@@ -30,11 +30,11 @@
     "knex:migrate:rollback": "knex migrate:rollback",
     "knex:migrate:rollback:all": "knex migrate:rollback --all",
     "knex:prod": "knex --knexfile dist/knexfile.js",
-    "knex:prod:migrate:latest": "npm run knex:prod migrate:latest",
-    "knex:prod:migrate:up": "npm run knex:prod migrate:up",
-    "knex:prod:migrate:down": "npm run knex:prod migrate:down",
-    "knex:prod:migrate:rollback": "npm run knex:prod migrate:rollback",
-    "knex:prod:migrate:rollback:all": "npm run knex:prod migrate:rollback --all",
+    "knex:prod:migrate:latest": "pnpm run knex:prod migrate:latest",
+    "knex:prod:migrate:up": "pnpm run knex:prod migrate:up",
+    "knex:prod:migrate:down": "pnpm run knex:prod migrate:down",
+    "knex:prod:migrate:rollback": "pnpm run knex:prod migrate:rollback",
+    "knex:prod:migrate:rollback:all": "pnpm run knex:prod migrate:rollback --all",
     "doc:generate": "npx compodoc -p tsconfig.json -n \"Documentation\"",
     "doc:serve": "npx compodoc -p tsconfig.json -n \"Documentation\" -s"
   },
@@ -111,5 +111,6 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  }
+  },
+  "packageManager": "pnpm@9.11.0"
 }
