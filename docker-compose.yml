@@ -3,9 +3,9 @@ services:
   api:
     build:
      context: .
-     target: development
+     target: build
     environment:
-      - DATABASE_URL=postgres://admin:admin@db/wavezync
+      - DATABASE_URL=postgres://postgres:postgres@db/wavezync
       - PORT=3000
     ports:
       - 3000:3000
