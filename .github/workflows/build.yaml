@@ -17,10 +17,6 @@ concurrency:
   group: "build-${{ github.ref }}"
   cancel-in-progress: true
 
-env:
-  DOKKU_HOST: ssh://dokku@ssh-dev.wavezync.com:22
-  DOKKU_APP: nestjs-starter-api
-
 jobs:
   # Build job
   build:
