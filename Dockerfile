@@ -1,36 +1,23 @@
-FROM node:20-alpine as development
+FROM node:20-alpine AS base
 
-# Create app directory
-WORKDIR /usr/src/app
+ENV HUSKY=0
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
-RUN corepack enable pnpm
-RUN corepack use pnpm@8
-
-
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package.json ./
-COPY pnpm-lock.yaml ./
-
-
-RUN pnpm i --frozen-lockfile
-
-# Bundle app source
+FROM base AS build
+WORKDIR /app
+COPY .npmrc pnpm-lock.yaml package.json ./
+RUN --mount=type=secret,id=npmrc,target=/root/.npmrc pnpm install --frozen-lockfile
 COPY . .
+RUN  pnpm build
 
-RUN pnpm build
+FROM base AS prod
+WORKDIR /app
+ENV NODE_ENV=production
+COPY .npmrc pnpm-lock.yaml package.json Procfile nest-cli.json ./
+RUN --mount=type=secret,id=npmrc,target=/root/.npmrc pnpm install --frozen-lockfile --prod
+COPY --from=build /app/dist ./dist
 
-FROM node:20-alpine as production
-WORKDIR /usr/src/app
-
-RUN corepack enable pnpm
-RUN corepack use pnpm@8
-
-COPY package*.json ./
-COPY pnpm-lock.yaml ./
-RUN pnpm i --frozen-lockfile --production
-
-COPY --from=development /usr/src/app/dist ./dist
-
-CMD [ "pnpm" , "start:prod" ]
+EXPOSE 3000
+CMD ["pnpm", "start:prod"]

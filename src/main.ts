@@ -77,6 +77,12 @@ async function bootstrap() {
       'https://github.com/typestack/class-validator#validation-errors',
     )
     .addBearerAuth()
+    .addGlobalParameters({
+      in: 'path',
+      name: 'X-Api-Version',
+      required: false,
+      description: 'API Version',
+    })
     .build();
 
   const document = SwaggerModule.createDocument(app, openApiConfig, {
