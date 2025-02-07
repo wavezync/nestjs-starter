@@ -8,6 +8,7 @@ import { AppModule } from './app.module';
 import { BaseExceptionsFilter } from './common/filters/base-exception.filter';
 import { ValidationException } from './common/exceptions/validation.exception';
 import { AllExceptionsFilter } from 'common/filters/all-exception.filter';
+import rawBodyMiddleware from 'utils/rawBody.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -47,7 +48,9 @@ async function bootstrap() {
     helmet({
       contentSecurityPolicy: helmetContentSecurityPolicy,
     }),
+    rawBodyMiddleware({}),
   );
+  //set max age
   app.enableCors();
   app.enableVersioning({
     type: VersioningType.URI,
