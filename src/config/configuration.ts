@@ -9,6 +9,7 @@ export interface AppConfig {
   database: DatabaseConfig;
   logger: LoggerConfig;
   isDevEnv: boolean;
+  corsMaxAge: number;
 }
 
 export interface DatabaseConfig {
@@ -38,6 +39,7 @@ export default (): AppConfig => {
       default: 'info',
     }),
     LOGGER_FORMAT: str({ choices: ['json', 'pretty'], default: 'json' }),
+    CORS_MAX_AGE: num({ default: 86400 }),
   });
 
   const config: AppConfig = {
@@ -52,6 +54,7 @@ export default (): AppConfig => {
       format: (env.LOGGER_FORMAT as LoggerFormat) || LoggerFormat.Json,
     },
     isDevEnv: env.isDev,
+    corsMaxAge: env.CORS_MAX_AGE,
   };
 
   return config;

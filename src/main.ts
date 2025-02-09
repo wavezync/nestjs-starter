@@ -19,6 +19,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get<number>('port');
   const logger = app.get(Logger);
+  const corsMaxAge = configService.get<number>('corsMaxAge');
 
   const helmetContentSecurityPolicy = {
     directives: {
@@ -50,8 +51,9 @@ async function bootstrap() {
     }),
     rawBodyMiddleware({}),
   );
-  //set max age
-  app.enableCors();
+  app.enableCors({
+    maxAge: corsMaxAge,
+  });
   app.enableVersioning({
     type: VersioningType.URI,
   });
