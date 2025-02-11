@@ -74,14 +74,12 @@ src
 
 ### Database and ORM
 
-For database we have used PostgreSQL. And for ORM we have used [Knex.js](https://knexjs.org) with [ObjectionJS](https://vincit.github.io/objection.js).
+For the database we use **PostgreSQL**. For interacting with the database, we now use [Kysely](https://kysely.dev/), a modern, type-safe SQL query builder for TypeScript.
 
-Knex is an awesome query builder which is closer to SQL. Objection also a thin wrapper around Knex.
-
-For all database migrations please use `snake_case` conversion when creating tables or columns.
+We are using [Knex.js](https://knexjs.org) to write and run database migrations. As such, please use `snake_case` when creating tables or columns in your migration scripts. 
 In PostgreSQL it is natural to work with `snake_case` when writing queries.
 
-Knex will automatically map your `snake_case` names into `camelCase` on application side. Dont use `snake_case` in JS side. Instead always use `camelCase`. Read [more](https://vincit.github.io/objection.js/recipes/snake-case-to-camel-case-conversion.html)
+Kysely will automatically map your `snake_case` names into `camelCase` on application side. Don't use `snake_case` in JS side. Instead always use `camelCase`. Read [more](https://kysely-org.github.io/kysely-apidoc/classes/CamelCasePlugin.html)
 
 > Please change the database name in docker-compose file and .env
 
