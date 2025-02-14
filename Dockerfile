@@ -3,7 +3,8 @@ FROM node:20-alpine AS base
 ENV HUSKY=0
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable && corepack prepare pnpm@9.11.0 --activate
+RUN npm i -g corepack@latest
+RUN corepack enable
 
 FROM base AS build
 WORKDIR /app
