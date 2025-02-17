@@ -20,6 +20,10 @@ export class UserModel implements User {
     this.updatedAt = user.updatedAt;
   }
 
+  static fromResult(result: User): UserModel {
+    return new UserModel(result);
+  }
+
   // any calculated properties goes here
   get joined_years_ago() {
     return new Date().getFullYear() - this.createdAt.getFullYear();

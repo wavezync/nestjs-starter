@@ -60,7 +60,7 @@ export class UserRepositoy {
       return null;
     }
 
-    return new UserModel(result);
+    return UserModel.fromResult(result);
   }
 
   async getUsersByIds(ids: string[]) {

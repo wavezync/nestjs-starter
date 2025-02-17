@@ -76,8 +76,7 @@ src
 
 For the database we use **PostgreSQL**. For interacting with the database, we now use [Kysely](https://kysely.dev/), a modern, type-safe SQL query builder for TypeScript.
 
-We are using [Knex.js](https://knexjs.org) to write and run database migrations. As such, please use `snake_case` when creating tables or columns in your migration scripts. 
-In PostgreSQL it is natural to work with `snake_case` when writing queries.
+We now also handle migrations using [kysely-ctl](https://github.com/kysely-org/kysely-ctl), the official CLI tool for Kysely. Migration files are written in TypeScript and reside in the `src/database/migrations` directory.
 
 Kysely will automatically map your `snake_case` names into `camelCase` on application side. Don't use `snake_case` in JS side. Instead always use `camelCase`. Read [more](https://kysely-org.github.io/kysely-apidoc/classes/CamelCasePlugin.html)
 
