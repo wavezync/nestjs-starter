@@ -10,14 +10,14 @@ services:
     ports:
       - 3000:3000
       - 9229:9229
-    working_dir: /usr/src/app
+    working_dir: /app
     volumes:
       - .:/usr/src/app
       - node_modules:/usr/src/app/node_modules
       - dist:/usr/src/app/dist
     depends_on:
       - db
-    command: npm run start:debug
+    command: pnpm run start:debug
 
   db:
     image: postgres:latest

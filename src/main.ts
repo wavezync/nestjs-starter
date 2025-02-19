@@ -8,15 +8,18 @@ import { AppModule } from './app.module';
 import { BaseExceptionsFilter } from './common/filters/base-exception.filter';
 import { ValidationException } from './common/exceptions/validation.exception';
 import { AllExceptionsFilter } from 'common/filters/all-exception.filter';
+import rawBodyMiddleware from 'utils/rawBody.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
+    snapshot: true,
   });
 
   const configService = app.get(ConfigService);
   const port = configService.get<number>('port');
   const logger = app.get(Logger);
+  const corsMaxAge = configService.get<number>('corsMaxAge');
 
   const helmetContentSecurityPolicy = {
     directives: {
@@ -46,8 +49,11 @@ async function bootstrap() {
     helmet({
       contentSecurityPolicy: helmetContentSecurityPolicy,
     }),
+    rawBodyMiddleware({}),
   );
-  app.enableCors();
+  app.enableCors({
+    maxAge: corsMaxAge,
+  });
   app.enableVersioning({
     type: VersioningType.URI,
   });
@@ -67,8 +73,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const openApiConfig = new DocumentBuilder()
-    .setTitle('Wavezync NestJS starter')
-    .setDescription('Wavezync NestJS starter')
+    .setTitle('WaveZync NestJS starter')
+    .setDescription('WaveZync NestJS starter')
     .setVersion('1.0')
     .addServer(`http://localhost:${port}`, 'Local')
     .setExternalDoc(

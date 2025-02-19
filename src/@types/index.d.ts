@@ -1,9 +1,9 @@
-import { UserDto } from '../modules/user/dtos/user.dto';
+import { User } from 'database/schema/users';
 
 declare global {
   namespace Express {
     interface Request {
-      user: UserDto;
+      user: User;
     }
   }
 }

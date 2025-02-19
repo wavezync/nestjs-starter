@@ -9,13 +9,13 @@ import { InvalidLoginOrPasswordException } from './exceptions/invalid-login-or-p
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userServie: UserService,
+    private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
   async loginUser(loginDto: LoginDto): Promise<LoginResponseDto> {
     const { login, password } = loginDto;
-    const user = await this.userServie.findUserByEmail(login);
+    const user = await this.userService.findUserByEmail(login);
     if (!user) {
       throw new InvalidLoginOrPasswordException();
     }
@@ -48,11 +48,11 @@ export class AuthService {
     }
 
     const id: string = decodedJwt['id'];
-    const user = await this.userServie.findUserById(id);
+    const user = await this.userService.findUserById(id);
     if (!user) {
       throw new UnauthorizedException();
     }
 
-    return user.toDto();
+    return user;
   }
 }

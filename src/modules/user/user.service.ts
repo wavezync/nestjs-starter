@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './models/user.model';
 import { RegisterUserDto } from './dtos/register-user.dto';
 import bcrypt from 'bcrypt';
 import { UserObject } from './dtos/objects/user.object';
 import { EmailAlreadyTakenException } from './exceptions/email-already-taken.exception';
+import { UserRepositoy } from './repository/user.respository';
 
 const BCRYPT_HASH_ROUNDS = 10;
 
 @Injectable()
 export class UserService {
+  constructor(private readonly userRepositoy: UserRepositoy) {}
+
   /**
    * Register a new user
    *
@@ -18,14 +20,9 @@ export class UserService {
   async registerUser(registerUser: RegisterUserDto) {
     const { email, password } = registerUser;
 
-    // we are using Knex + Objection to query
-    // it is closer to SQL
-    // Objection https://vincit.github.io/objection.js/guide/query-examples.html#basic-queries
-    // Knex https://knexjs.org/#Builder
-    const prevUser = await User.query()
-      .where('email', email.toLowerCase())
-      .select('id')
-      .first(); // take first element, or an empty array will return
+    const prevUser = await this.userRepositoy.getUserByEmail(
+      email.toLowerCase(),
+    );
 
     if (prevUser) {
       throw new EmailAlreadyTakenException(email);
@@ -33,28 +30,27 @@ export class UserService {
 
     const passwordHash = await bcrypt.hash(password, BCRYPT_HASH_ROUNDS);
 
-    await User.query().insert({
-      email,
+    const user = await this.userRepositoy.createUser({
+      email: email.toLowerCase(),
       passwordHash,
-      verified: true, // for now no emails
     });
+
+    return user.toDto();
   }
 
-  async findUserByEmail(email: string): Promise<User | undefined> {
-    const user = await User.query().where('email', email.toLowerCase()).first();
-    return user;
+  async findUserByEmail(email: string) {
+    return this.userRepositoy.getUserByEmail(email);
   }
 
-  async findUserById(id: string): Promise<User | undefined> {
-    const user = await User.query().where('id', id).first();
-    return user;
+  async findUserById(id: string) {
+    return this.userRepositoy.getUserById(id);
   }
 
   async loadUsersByIdBatch(userIds: string[]): Promise<(Error | UserObject)[]> {
-    const users = await User.query().whereIn('id', userIds);
+    const users = await this.userRepositoy.getUsersByIds(userIds);
     const userDtosMap = users.reduce<Map<string, UserObject>>(
       (result, user) => {
-        result.set(user.id, user.toDto());
+        result.set(user.id, user);
         return result;
       },
       new Map<string, UserObject>(),

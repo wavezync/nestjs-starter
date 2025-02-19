@@ -11,7 +11,8 @@ import { EmailAlreadyTakenException } from '../exceptions/email-already-taken.ex
 import { plainToClass } from 'class-transformer';
 import { EmailAlreadyTakenError } from '../dtos/errors/email-already-taken-error.object';
 import { RegisterUserInput } from '../dtos/inputs/register-user.input';
-import { User } from '../models/user.model';
+import { User } from 'database/schema/users';
+import { UserModel } from '../models/user.model';
 
 @Resolver(() => UserObject)
 export class UserResolver {
@@ -22,7 +23,7 @@ export class UserResolver {
     description: 'Get current user',
   })
   getMe(@CurrentUser() user: User): UserObject {
-    return user;
+    return new UserModel(user).toDto();
   }
 
   @Public()

@@ -1,49 +1,42 @@
-import { Model } from 'objection';
-import { v4 as uuid } from 'uuid';
+import { User } from 'database/schema/users';
 import { UserDto } from '../dtos/user.dto';
 
-// Since we created and imported DatabaseModule now every Model has access to
-// the Knex instance Read more: https://vincit.github.io/objection.js/guide/getting-started.html
-export class User extends Model {
-  // define table name
-  // check https://vincit.github.io/objection.js/guide/models.html
-  static tableName = 'users';
-
-  id!: string;
-  email!: string;
-
-  // this is password_hash in db
-  // it is better to use PostgreSQL convention(snake_case) in DB
-  // and JS convention(camelCase) in application level
-  // Read More https://vincit.github.io/objection.js/recipes/snake-case-to-camel-case-conversion.html
+export class UserModel implements User {
+  id: string;
+  name: string;
+  email: string;
   passwordHash: string;
-  createdAt!: Date;
-  updatedAt!: Date;
-  verified!: boolean;
+  verified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 
-  // on create uuid and createdAt timestamp
-  $beforeInsert() {
-    const now = new Date();
-    this.id = uuid();
-    this.createdAt = now;
-    this.updatedAt = now;
-    if (this.email) this.email = this.email.toLowerCase();
+  constructor(user: User) {
+    this.id = user.id;
+    this.name = user.name;
+    this.email = user.email;
+    this.passwordHash = user.passwordHash;
+    this.verified = user.verified;
+    this.createdAt = user.createdAt;
+    this.updatedAt = user.updatedAt;
   }
 
-  // on update queries also set the timestamp
-  $beforeUpdate() {
-    this.updatedAt = new Date();
+  static fromResult(result: User): UserModel {
+    return new UserModel(result);
+  }
 
-    if (this.email) this.email = this.email.toLowerCase();
+  // any calculated properties goes here
+  get joined_years_ago() {
+    return new Date().getFullYear() - this.createdAt.getFullYear();
   }
 
   toDto(): UserDto {
     return {
       id: this.id,
+      name: this.name,
       email: this.email,
+      verified: this.verified,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      verified: this.verified,
     };
   }
 }
