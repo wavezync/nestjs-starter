@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supabase Auth UI</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --brand-color: #3ecf8e;
+      --brand-hover: #30ba7d;
+      --text-color: #1f1f1f;
+      --text-light: #4a4a4a;
+      --border-color: #e5e7eb;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      color: var(--text-color);
+      line-height: 1.5;
+      background: #fafafa;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 32px;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: var(--text-color);
+    }
+
+    .auth-form {
+      margin-bottom: 24px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 15px;
+      margin-bottom: 16px;
+      transition: border-color 0.15s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--brand-color);
+      box-shadow: 0 0 0 2px rgba(62, 207, 142, 0.1);
+    }
+
+    button {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button[type="submit"] {
+      background: var(--brand-color);
+      color: white;
+      border: none;
+    }
+
+    button[type="submit"]:hover {
+      background: var(--brand-hover);
+    }
+
+    .social-login {
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .social-button {
+      background: white;
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      font-weight: 500;
+    }
+
+    .social-button:hover {
+      background: #f9fafb;
+      border-color: #d1d5db;
+    }
+
+    #message {
+      padding: 12px;
+      margin-top: 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .error {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fee2e2;
+    }
+
+    .success {
+      background: #f0fdf4;
+      color: #16a34a;
+      border: 1px solid #dcfce7;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 24px 0;
+      position: relative;
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 45%;
+      height: 1px;
+      background-color: var(--border-color);
+    }
+
+    .divider::before {
+      left: 0;
+    }
+
+    .divider::after {
+      right: 0;
+    }
+
+    pre {
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      border: 1px solid var(--border-color);
+      max-width: 100%;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      line-height: 1.6;
+    }
+
+    #logged-in-view {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- New Supabase Credentials Form -->
+    <div id="supabase-config">
+      <h2>Configure Supabase</h2>
+      <form id="supabase-config-form">
+        <input type="text" id="supabase-url" placeholder="Supabase URL" required>
+        <input type="text" id="supabase-key" placeholder="Supabase Key" required>
+        <button type="submit">Save Credentials</button>
+      </form>
+      <div id="config-message"></div>
+    </div>
+
+    <div id="auth-ui" style="display:none">
+      <form id="auth-form" class="auth-form">
+        <h2>Sign In</h2>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Sign In with Email</button>
+      </form>
+
+      <div class="divider">OR</div>
+
+      <div class="social-login">
+        <button onclick="handleSocialLogin('google')" class="social-button">
+          Google
+        </button>
+        <button onclick="handleSocialLogin('facebook')" class="social-button">
+          Facebook
+        </button>
+        <button onclick="handleSocialLogin('github')" class="social-button">
+          GitHub
+        </button>
+        <button onclick="handleSocialLogin('twitter')" class="social-button">
+          Twitter
+        </button>
+        <button onclick="handleSocialLogin('linkedin_oidc')" class="social-button">
+          LinkedIn
+        </button>
+      </div>
+
+      <div id="message"></div>
+    </div>
+
+    <div id="logged-in-view" style="display:none">
+      <h2>Welcome!</h2>
+      <div style="display: flex; gap: 10px; margin: 20px 0;">
+        <button id="copy-token">Copy Access Token</button>
+        <button onclick="handleSignOut()">Sign Out</button>
+      </div>
+      <pre><code id="session-info"></code></pre>
+    </div>
+  </div>
+
+  <script>
+    let supabaseClient = null;
+
+    async function initializeSupabase(url, key) {
+      supabaseClient = supabase.createClient(url, key);
+      localStorage.setItem('supabaseUrl', url);
+      localStorage.setItem('supabaseKey', key);
+      document.getElementById('supabase-config').style.display = 'none';
+      document.getElementById('auth-ui').style.display = 'block';
+    }
+
+    // Check if credentials exist in localStorage and initialize
+    const storedUrl = localStorage.getItem('supabaseUrl');
+    const storedKey = localStorage.getItem('supabaseKey');
+    if (storedUrl && storedKey) {
+      initializeSupabase(storedUrl, storedKey);
+    }
+
+    // Handle Supabase config form submission without API calls
+    document.getElementById('supabase-config-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const supabaseUrl = document.getElementById('supabase-url').value;
+      const supabaseKey = document.getElementById('supabase-key').value;
+      // Directly save credentials and initialize client
+      document.getElementById('config-message').textContent = 'Credentials saved successfully!';
+      initializeSupabase(supabaseUrl, supabaseKey);
+    });
+
+    function showMessage(text, isError = false) {
+      const messageEl = document.getElementById('message');
+      messageEl.className = isError ? 'error' : 'success';
+      messageEl.textContent = text;
+    }
+
+    function updateAuthDisplay(session) {
+      const authUi = document.getElementById('auth-ui');
+      const loggedInView = document.getElementById('logged-in-view');
+      const sessionInfo = document.getElementById('session-info');
+
+      if (session) {
+        authUi.style.display = 'none';
+        loggedInView.style.display = 'block';
+        sessionInfo.textContent = JSON.stringify(session, null, 2);
+      } else {
+        authUi.style.display = 'block';
+        loggedInView.style.display = 'none';
+      }
+    }
+
+    async function handleSocialLogin(provider) {
+      try {
+        const { error } = await supabaseClient.auth.signInWithOAuth({
+          provider,
+          options: { redirectTo: 'http://localhost:3002/' }
+        });
+        if (error) throw error;
+      } catch (error) {
+        showMessage(error.message, true);
+      }
+    }
+
+    async function handleSignOut() {
+      const { error } = await supabaseClient.auth.signOut();
+      if (error) {
+        showMessage(error.message, true);
+      }
+    }
+
+    document.getElementById('auth-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        showMessage('Signed in successfully!');
+      } catch (error) {
+        showMessage(error.message, true);
+      }
+    });
+
+    document.getElementById('copy-token')?.addEventListener('click', async () => {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (session?.access_token) {
+        await navigator.clipboard.writeText(session.access_token);
+        showMessage('Access token copied to clipboard!');
+      }
+    });
+
+    supabaseClient?.auth.getSession().then(({ data: { session } }) => {
+      updateAuthDisplay(session);
+    });
+
+    supabaseClient?.auth.onAuthStateChange((_event, session) => {
+      updateAuthDisplay(session);
+    });
+  </script>
+</body>
+
+</html>
