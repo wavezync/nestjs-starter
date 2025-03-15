@@ -9,6 +9,7 @@ import { BaseExceptionsFilter } from './common/filters/base-exception.filter';
 import { ValidationException } from './common/exceptions/validation.exception';
 import { AllExceptionsFilter } from 'common/filters/all-exception.filter';
 import rawBodyMiddleware from 'utils/rawBody.middleware';
+import { apiReference } from '@scalar/nestjs-api-reference';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -93,7 +94,11 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, openApiConfig, {
     deepScanRoutes: true,
   });
-  SwaggerModule.setup('api-docs', app, document);
+  SwaggerModule.setup('api-docs', app, document, {
+    ui: false,
+  });
+
+  app.use('/api-docs', apiReference({ content: document }));
 
   await app.listen(port, () => {
     logger.log(`Application started at port:${port}`);
