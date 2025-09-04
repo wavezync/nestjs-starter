@@ -6,6 +6,7 @@ import { BaseExceptionsFilter } from 'common/filters/base-exception.filter';
 import { AllExceptionsFilter } from 'common/filters/all-exception.filter';
 import MOCK_USERS from '../mocks/user-mocks';
 import request from 'supertest';
+import { PostgresContainer } from '../utils/postgres-container';
 
 describe('AuthModule', () => {
   let testingModule: TestingModule;
@@ -13,7 +14,11 @@ describe('AuthModule', () => {
   let registeredUser: { email: string; password: string };
   let authToken = '';
   beforeAll(async () => {
-    testingModule = await TestModuleFactory.createTestModule();
+    const postgresContainer = await PostgresContainer.getInstance();
+
+    testingModule = await TestModuleFactory.createTestModule(
+      postgresContainer.getConnectionUri(),
+    );
     app = testingModule.createNestApplication();
 
     app.useGlobalFilters(new AllExceptionsFilter(), new BaseExceptionsFilter());

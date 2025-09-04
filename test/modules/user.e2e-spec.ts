@@ -6,13 +6,18 @@ import request from 'supertest';
 import { ValidationException } from 'common/exceptions/validation.exception';
 import { BaseExceptionsFilter } from 'common/filters/base-exception.filter';
 import { AllExceptionsFilter } from 'common/filters/all-exception.filter';
+import { PostgresContainer } from '../utils/postgres-container';
 
 describe('UserModule', () => {
   let testingModule: TestingModule;
   let app: INestApplication;
 
   beforeAll(async () => {
-    testingModule = await TestModuleFactory.createTestModule();
+    const postgresContainer = await PostgresContainer.getInstance();
+
+    testingModule = await TestModuleFactory.createTestModule(
+      postgresContainer.getConnectionUri(),
+    );
     app = testingModule.createNestApplication();
 
     app.useGlobalFilters(new AllExceptionsFilter(), new BaseExceptionsFilter());

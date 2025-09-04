@@ -15,31 +15,25 @@ import { promises as fs } from 'fs';
 import * as path from 'path';
 
 import { Pool } from 'pg';
+/**
+ * This class manages a PostgreSQL container for testing purposes.
+ * It ensures that the container is started only once and provides methods
+ * to run migrations and stop the container.
+ */
+export class PostgresContainer {
+  private static instance: StartedPostgreSqlContainer | null = null;
 
-export class TestContainerHelper {
-  private static instance: TestContainerHelper;
-  private static container: StartedPostgreSqlContainer;
-
-  private constructor() {}
-
-  public static getInstance(): TestContainerHelper {
-    if (!TestContainerHelper.instance) {
-      TestContainerHelper.instance = new TestContainerHelper();
-    }
-    return TestContainerHelper.instance;
-  }
-
-  public async startPostgresContainer(): Promise<StartedPostgreSqlContainer> {
-    if (!TestContainerHelper.container) {
-      TestContainerHelper.container = await new PostgreSqlContainer(
+  static async getInstance(): Promise<StartedPostgreSqlContainer> {
+    if (!PostgresContainer.instance) {
+      const container = await new PostgreSqlContainer(
         'postgres:15-alpine',
       ).start();
-      console.log('PostgreSQL container started !!!');
+      PostgresContainer.instance = container;
 
       const db = new Kysely<DB>({
         dialect: new PostgresDialect({
           pool: new Pool({
-            connectionString: `${TestContainerHelper.container.getConnectionUri()}?sslmode=disable`,
+            connectionString: `${container.getConnectionUri()}?sslmode=disable`,
             max: 5,
           }),
         }),
@@ -48,17 +42,17 @@ export class TestContainerHelper {
       await this.runMigrations(db);
       await db.destroy();
     }
-    return TestContainerHelper.container;
+    return PostgresContainer.instance;
   }
 
-  public async stopPostgresContainer(): Promise<void> {
-    if (TestContainerHelper.container) {
-      await TestContainerHelper.container.stop();
-      TestContainerHelper.container = undefined;
+  static async stop(): Promise<void> {
+    if (PostgresContainer.instance) {
+      await PostgresContainer.instance.stop();
+      PostgresContainer.instance = null;
     }
   }
 
-  private async runMigrations(db: Kysely<DB>): Promise<void> {
+  static async runMigrations(db: Kysely<DB>): Promise<void> {
     console.log('Running migrations...');
 
     const migrationsPath = join(__dirname, '../../src/database/migrations');

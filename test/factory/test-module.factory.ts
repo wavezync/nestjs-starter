@@ -2,18 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { createTestConfig } from '../helpers/test-configuration';
 import { TestAppModule } from '../test-app.module';
-import { StartedPostgreSqlContainer } from '@testcontainers/postgresql';
 export class TestModuleFactory {
-  static async createTestModule(): Promise<TestingModule> {
-    const postgresContainer = globalThis.__Container__
-      .postgres as StartedPostgreSqlContainer;
-
+  static async createTestModule(dbUrl: string): Promise<TestingModule> {
+    const databaseUrl = dbUrl + '?sslmode=disable';
     // this is to ignore warning from env not found error. does not matter what we put
-    process.env.DATABASE_URL = postgresContainer.getConnectionUri();
-    process.env.SECRET = 'ASD';
-    const testConfig = createTestConfig(
-      postgresContainer.getConnectionUri() + '?sslmode=disable',
-    );
+    process.env.DATABASE_URL = databaseUrl;
+    process.env.SECRET = 'fqipdmzavlbb9cvbzpab2fw5h5j4tu';
+    const testConfig = createTestConfig(databaseUrl);
     const moduleRef = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
