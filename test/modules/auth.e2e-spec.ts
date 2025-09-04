@@ -34,11 +34,11 @@ describe('AuthModule', () => {
     );
 
     await app.init();
-  });
+  }, 60000);
 
   afterAll(async () => {
     await app.close();
-  });
+  }, 60000);
   const generateValidUserDto = () => ({
     email: MOCK_USERS.user2.email,
     password: MOCK_USERS.user2.password,

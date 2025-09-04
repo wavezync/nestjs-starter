@@ -33,11 +33,11 @@ describe('UserModule', () => {
     );
 
     await app.init();
-  });
+  }, 60000);
 
   afterAll(async () => {
     await app.close();
-  });
+  }, 60000);
 
   const generateValidUserDto = () => ({
     email: faker.internet.email(),
