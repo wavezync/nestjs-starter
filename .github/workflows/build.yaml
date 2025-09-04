@@ -61,5 +61,7 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Lint
         run: ${{ steps.detect-package-manager.outputs.runner }} lint
+      - name: Test E2E
+        run: ${{ steps.detect-package-manager.outputs.runner }} test:e2e
       - name: Build
         run: ${{ steps.detect-package-manager.outputs.runner }} build
